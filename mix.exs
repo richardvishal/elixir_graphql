@@ -47,7 +47,9 @@ defmodule ElixirGraphql.MixProject do
       {:plug_cowboy, "~> 2.5"},
       # graphql deps
       {:absinthe, "~> 1.7"},
-      {:absinthe_plug, "~> 1.5"}
+      {:absinthe_plug, "~> 1.5"},
+      # password hashing
+      {:argon2_elixir, "~> 4.1"}
     ]
   end
 
