@@ -5,8 +5,10 @@ defmodule ElixirGraphqlWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ElixirGraphqlWeb do
+  scope "/api/graphql" do
     pipe_through :api
+    get "/", Absinthe.Plug.GraphiQL, schema: ElixirGraphqlWeb.Schema, interface: :playground
+    post "/", Absinthe.Plug, schema: ElixirGraphqlWeb.Schema
   end
 
   # Enables LiveDashboard only for development
