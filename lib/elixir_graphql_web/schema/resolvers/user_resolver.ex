@@ -9,6 +9,9 @@ defmodule ElixirGraphqlWeb.Schema.Resolvers.UserResolver do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, Utils.format_changeset_errors(changeset)}
+
+      _ ->
+        {:error, Constants.internal_server_error()}
     end
   end
 end
