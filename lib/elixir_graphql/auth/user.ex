@@ -20,10 +20,18 @@ defmodule ElixirGraphql.Auth.User do
     |> unique_constraint(:email)
     |> validate_format(:email, ~r/@/)
     |> update_change(:email, &String.downcase(&1))
+    |> update_change(:username, &String.downcase(&1))
     |> validate_length(:username, min: 4, max: 30)
     |> validate_length(:name, min: 3, max: 30)
     |> validate_length(:password, min: 8, max: 30)
     |> hash_password()
+  end
+
+  def login_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username, :password])
+    |> validate_required([:username, :password])
+    |> update_change(:username, &String.downcase(&1))
   end
 
   defp hash_password(%Ecto.Changeset{valid?: true} = changeset),
