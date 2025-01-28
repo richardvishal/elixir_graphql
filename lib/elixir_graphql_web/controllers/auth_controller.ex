@@ -5,6 +5,9 @@ defmodule ElixirGraphqlWeb.AuthController do
   alias ElixirGraphql.Auth.User
   alias ElixirGraphqlWeb.Utils
   alias ElixirGraphqlWeb.Constants
+  plug :dont_exploit_me when action in [:login]
+  plug :protect_me when action in [:logout]
+
   @bad_request 400
 
   def register(conn, params) do
@@ -33,7 +36,10 @@ defmodule ElixirGraphqlWeb.AuthController do
            Auth.log_in(params),
          %User{} = user <- Auth.get_by_username(username),
          true <- Argon2.verify_pass(password, user.password) do
-      render(conn, "acknowledge.json", %{message: "Login Successfully!"})
+      conn
+      |> put_status(:created)
+      |> put_session(:current_user_id, user.id)
+      |> render("acknowledge.json", %{message: "Login Successfully!"})
     else
       %Ecto.Changeset{} = changeset ->
         conn
@@ -46,6 +52,28 @@ defmodule ElixirGraphqlWeb.AuthController do
         |> render("error.json", %{
           message: Constants.invalid_credentials()
         })
+    end
+  end
+
+  def logout(conn, _params) do
+    conn
+    |> Plug.Conn.clear_session()
+    |> render("acknowledge.json", %{message: "Logged Out!"})
+  end
+
+  defp dont_exploit_me(conn, _params) do
+    if conn.assigns.user_assigned? do
+      conn |> send_resp(401, Constants.not_authorized()) |> halt
+    else
+      conn
+    end
+  end
+
+  defp protect_me(conn, _params) do
+    if conn.assigns.user_assigned? do
+      conn
+    else
+      conn |> send_resp(401, Constants.not_authenticated()) |> halt
     end
   end
 end

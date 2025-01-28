@@ -1,8 +1,12 @@
 defmodule ElixirGraphqlWeb.Router do
   use ElixirGraphqlWeb, :router
 
+  alias ElixirGraphqlWeb.Plugs.PopulateAuth
+
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug PopulateAuth
   end
 
   pipeline :graphql do
@@ -13,6 +17,7 @@ defmodule ElixirGraphqlWeb.Router do
     pipe_through [:api]
     post("/auth/register", AuthController, :register)
     post("/auth/login", AuthController, :login)
+    delete("/auth/logout", AuthController, :logout)
   end
 
   scope "/api/graphql" do
