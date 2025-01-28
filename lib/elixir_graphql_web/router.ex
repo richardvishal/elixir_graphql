@@ -1,7 +1,7 @@
 defmodule ElixirGraphqlWeb.Router do
   use ElixirGraphqlWeb, :router
 
-  alias ElixirGraphqlWeb.Plugs.PopulateAuth
+  alias ElixirGraphqlWeb.Plugs.{PopulateAuth, ProtectGraphql}
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -11,6 +11,8 @@ defmodule ElixirGraphqlWeb.Router do
 
   pipeline :graphql do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug ProtectGraphql
   end
 
   scope "/api", ElixirGraphqlWeb do
