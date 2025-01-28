@@ -6,7 +6,7 @@ defmodule ElixirGraphqlWeb.AuthController do
   alias ElixirGraphqlWeb.Utils
   alias ElixirGraphqlWeb.Constants
   plug :dont_exploit_me when action in [:login]
-  plug :protect_me when action in [:logout]
+  plug :protect_me when action in [:logout, :get_me]
 
   @bad_request 400
 
@@ -53,6 +53,11 @@ defmodule ElixirGraphqlWeb.AuthController do
           message: Constants.invalid_credentials()
         })
     end
+  end
+
+  def get_me(conn, _params) do
+    conn
+    |> render("get_me.json", %{current_user: conn.assigns.current_user})
   end
 
   def logout(conn, _params) do

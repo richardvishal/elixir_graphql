@@ -18,6 +18,7 @@ defmodule ElixirGraphqlWeb.Router do
     post("/auth/register", AuthController, :register)
     post("/auth/login", AuthController, :login)
     delete("/auth/logout", AuthController, :logout)
+    get("/auth/getMe", AuthController, :get_me)
   end
 
   scope "/api/graphql" do
