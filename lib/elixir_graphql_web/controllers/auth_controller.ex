@@ -5,7 +5,7 @@ defmodule ElixirGraphqlWeb.AuthController do
   alias ElixirGraphql.Auth.User
   alias ElixirGraphqlWeb.Utils
   alias ElixirGraphqlWeb.Constants
-  plug :dont_exploit_me when action in [:login]
+  plug :dont_exploit_me when action in [:login, :register]
   plug :protect_me when action in [:logout, :get_me]
 
   @bad_request 400
