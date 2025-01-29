@@ -1,7 +1,7 @@
 defmodule ElixirGraphql.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias ElixirGraphql.Chat.Room
+  alias ElixirGraphql.Chat.{Room, Message.Message}
 
   schema "users" do
     field :name, :string
@@ -9,6 +9,7 @@ defmodule ElixirGraphql.Auth.User do
     field :password, :string
     field :email, :string
     has_many :rooms, Room
+    has_many :messages, Message
 
     timestamps()
   end
