@@ -3,9 +3,9 @@ defmodule ElixirGraphql.Repo.Migrations.CreateRooms do
 
   def change do
     create table(:rooms) do
-      add(:name, :string)
-      add(:description, :string)
-      add(:user_id, references(:users, on_delete: :delete_all ), null: false)
+      add(:name, :string, null: false)
+      add(:description, :string, null: false)
+      add(:user_id, references(:users, on_delete: :delete_all), null: false)
 
       timestamps()
     end
