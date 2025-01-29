@@ -6,7 +6,7 @@ defmodule ElixirGraphqlWeb.Schema.Types.UserType do
     field :name, :string
     field :username, :string
     field :email, :string
-    field :password, :string
     field :inserted_at, :string
+    field :rooms, list_of(:room_type)
   end
 end

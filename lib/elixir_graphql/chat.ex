@@ -18,7 +18,7 @@ defmodule ElixirGraphql.Chat do
 
   """
   def list_rooms do
-    Repo.all(Room)
+    Repo.all(from(r in Room, preload: [:user]))
   end
 
   @doc """
@@ -100,5 +100,12 @@ defmodule ElixirGraphql.Chat do
   """
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
+  end
+
+  def delete_room_by_id(room_id, user_id) do
+    case Repo.delete_all(from(r in Room, where: r.id == ^room_id and r.user_id == ^user_id)) do
+      {0, _} -> {:error, :not_found}
+      _ -> {:ok, :deleted}
+    end
   end
 end
