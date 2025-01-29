@@ -49,7 +49,9 @@ defmodule ElixirGraphql.MixProject do
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
       # password hashing
-      {:argon2_elixir, "~> 4.1"}
+      {:argon2_elixir, "~> 4.1"},
+      # fake data
+      {:faker, "~> 0.18.0"}
     ]
   end
 
