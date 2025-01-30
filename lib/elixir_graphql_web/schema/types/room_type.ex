@@ -16,7 +16,7 @@ defmodule ElixirGraphqlWeb.Schema.Types.RoomType do
     field :description, non_null(:string)
   end
 
-  input_object :delete_room_input do
+  input_object :room_id_input do
     field :room_id, non_null(:id)
   end
 end

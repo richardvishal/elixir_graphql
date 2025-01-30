@@ -16,6 +16,11 @@ defmodule ElixirGraphqlWeb.Schema do
       resolve(&Resolvers.UserResolver.get_all_users/3)
     end
 
+    @desc "Get current user"
+    field :get_me, :user_type do
+      resolve(&Resolvers.UserResolver.get_me/3)
+    end
+
     @desc "Get all rooms"
     field :rooms, list_of(:room_type) do
       resolve(&Resolvers.RoomResolver.get_all_rooms/3)
