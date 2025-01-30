@@ -25,7 +25,12 @@ defmodule ElixirGraphqlWeb.Router do
 
   scope "/api/graphql" do
     pipe_through :graphql
-    get "/", Absinthe.Plug.GraphiQL, schema: ElixirGraphqlWeb.Schema, interface: :playground
+
+    get "/", Absinthe.Plug.GraphiQL,
+      schema: ElixirGraphqlWeb.Schema,
+      socket: ElixirGraphqlWeb.UserSocket,
+      interface: :playground
+
     post "/", Absinthe.Plug, schema: ElixirGraphqlWeb.Schema
   end
 

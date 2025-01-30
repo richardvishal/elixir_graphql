@@ -11,6 +11,11 @@ defmodule ElixirGraphqlWeb.Schema.Types.MessageType do
     field :inserted_at, :string
   end
 
+  object :deleted_message_type do
+    field :room_id, :id
+    field :message_id, :id
+  end
+
   input_object :message_input_type do
     field :content, non_null(:string)
     field :room_id, non_null(:id)
@@ -22,5 +27,6 @@ defmodule ElixirGraphqlWeb.Schema.Types.MessageType do
 
   input_object :delete_message_input do
     field :message_id, non_null(:id)
+    field :room_id, non_null(:id)
   end
 end

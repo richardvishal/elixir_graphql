@@ -15,7 +15,8 @@ defmodule ElixirGraphql.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: ElixirGraphql.PubSub},
       # Start the Endpoint (http/https)
-      ElixirGraphqlWeb.Endpoint
+      ElixirGraphqlWeb.Endpoint,
+      {Absinthe.Subscription, ElixirGraphqlWeb.Endpoint}
       # Start a worker by calling: ElixirGraphql.Worker.start_link(arg)
       # {ElixirGraphql.Worker, arg}
     ]

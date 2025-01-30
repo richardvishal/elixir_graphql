@@ -1,6 +1,7 @@
 defmodule ElixirGraphqlWeb.Schema do
   use Absinthe.Schema
   import_types(ElixirGraphqlWeb.Schema.Types)
+  alias ElixirGraphqlWeb.Topics
   alias ElixirGraphqlWeb.Schema.Resolvers
 
   query do
@@ -36,20 +37,60 @@ defmodule ElixirGraphqlWeb.Schema do
 
     @desc "Delete Room"
     field :delete_room, :boolean do
-      arg(:input, non_null(:delete_room_input))
+      arg(:input, non_null(:room_id_input))
       resolve(&Resolvers.RoomResolver.delete_room/3)
     end
 
     @desc "Create Message"
-    field :create_message, :boolean do
+    field :create_message, :message_type do
       arg(:input, non_null(:message_input_type))
       resolve(&Resolvers.MessageResolver.create_message/3)
     end
 
     @desc "Delete Message"
-    field :delete_message, :boolean do
+    field :delete_message, :deleted_message_type do
       arg(:input, non_null(:delete_message_input))
       resolve(&Resolvers.MessageResolver.delete_message/3)
+    end
+  end
+
+  subscription do
+    @desc "New Message"
+    field :new_message, :message_type do
+      arg(:input, non_null(:room_id_input))
+
+      config(fn %{input: input}, _ ->
+        {:ok, topic: "#{input.room_id}:#{Topics.new_message()}"}
+      end)
+
+      trigger(:create_message,
+        topic: fn message ->
+          "#{message.room_id}:#{Topics.new_message()}"
+        end
+      )
+
+      resolve(fn message, _, _ ->
+        {:ok, message}
+      end)
+    end
+
+    @desc "Deleted Message"
+    field :deleted_message, :deleted_message_type do
+      arg(:input, non_null(:room_id_input))
+
+      config(fn %{input: input}, _ ->
+        {:ok, topic: "#{input.room_id}:#{Topics.deleted_message()}"}
+      end)
+
+      trigger(:delete_message,
+        topic: fn message ->
+          "#{message.room_id}:#{Topics.deleted_message()}"
+        end
+      )
+
+      resolve(fn message, _, _ ->
+        {:ok, message}
+      end)
     end
   end
 end

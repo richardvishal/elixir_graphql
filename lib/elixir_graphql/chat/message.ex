@@ -103,14 +103,14 @@ defmodule ElixirGraphql.Chat.Message do
     Message.changeset(message, attrs)
   end
 
-  def delete_message_by_id(message_id, user_id) do
+  def delete_message_by_id(%{message_id: message_id, room_id: room_id} = args, user_id) do
     case Repo.delete_all(
            from(m in Message,
-             where: m.id == ^message_id and m.user_id == ^user_id
+             where: m.id == ^message_id and m.room_id == ^room_id and m.user_id == ^user_id
            )
          ) do
       {0, _} -> {:error, :not_found}
-      _ -> {:ok, :deleted}
+      _ -> {:ok, args}
     end
   end
 end

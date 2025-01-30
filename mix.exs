@@ -34,6 +34,7 @@ defmodule ElixirGraphql.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.6.16"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
@@ -48,6 +49,7 @@ defmodule ElixirGraphql.MixProject do
       # graphql deps
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
       # password hashing
       {:argon2_elixir, "~> 4.1"},
       # fake data
